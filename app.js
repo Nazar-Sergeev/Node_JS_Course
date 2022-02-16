@@ -123,6 +123,6 @@ fs.rename(path.join(__dirname, 'test', 'text2.txt'),
             console.log(error);
             throw error
         }
-    }); // переміщає файл (данні зберігаються) 
+    }); // переміщає файл (данні зберігаються)
 
 
