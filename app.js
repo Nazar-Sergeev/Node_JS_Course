@@ -26,8 +26,9 @@ app.get('/users/:userId', (req, res) => {
     const {userId} = req.params;
     const user = users.find(user => user.id === +userId);
     if (!user) {
-        res.redirect('/errorPage');
-        return;
+        const error = `User with id: ${userId} is not found!`;
+        res.redirect('errorPage');
+        throw error;
     }
     res.render('user', {user});
 });
@@ -35,10 +36,10 @@ app.get('/users/:userId', (req, res) => {
 app.post('/login', (req, res) => {
     const filterUser = users.some(user => user.email === req.body.email);
     if (filterUser) {
-        res.redirect('/errorPage');
+        res.redirect('errorPage');
     }
     users.push({...req.body, id: users.length ? users[users.length - 1].id + 1 : 1});
-    res.redirect('/users');
+    res.redirect('users');
 });
 
 app.use((req, res) => {
