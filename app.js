@@ -1,0 +1,121 @@
+// const path = require('path');
+// const fs = require('fs');
+
+// 1. Спробуйте створити якийсь файл txt, прочитайте з нього дані і одразу, дані які ви отримали запишіть їх в інший файл, в вас вийде невеликий callback hell, пізніше я вам покажу
+// як можна це обійти, але поки зробіть так
+//
+// fs.mkdir(path.join(__dirname, 'files'), (error) => {
+//     if (error) {
+//         console.log(error);
+//         throw error;
+//     }
+// });
+//
+// function createFile(data) {
+//     fs.writeFile(path.join(__dirname, 'files', 'file2.txt'), data, (error) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//     });
+// }
+//
+// fs.writeFile(path.join(__dirname, 'files', 'file.txt'), 'SOME DATA', (error) => {
+//     if (error) {
+//         console.log(error);
+//         throw error;
+//     }
+//
+//     fs.readFile(path.join(__dirname, 'files', 'file.txt'), (error,data) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//         createFile(data)
+//         fs.writeFile(path.join(__dirname, 'files', 'file2.txt'), data, (error) => {
+//             if (error) {
+//                 console.log(error);
+//                 throw error;
+//             }
+//         });
+//
+//     });
+// });
+
+// 2. Створіть файл ( можете вручну ) заповніть його якимись даними
+// Прочитайте його, скопіюйте всі дані з нього і перенесіть їх в нову папку та файл в ній, старий файл видаліть після того як все завершиться. Також вийде callback hell
+//
+//
+// fs.readFile(path.join(__dirname, 'mainFile.txt'), (error, data) => {
+//     if (error) {
+//         console.log(error);
+//         throw error;
+//     }
+//     fs.mkdir(path.join(__dirname, 'newDir'), (error) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//     });
+//     fs.writeFile(path.join(__dirname, 'newDir', 'newFile.txt'), data, (error) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//     });
+//     fs.unlink(path.join(__dirname, 'mainFile.txt'), (error) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//     });
+// });
+
+// 3. Створіть папку (можете вручну) напишіть скріпт який створить в ній якись дані
+// (можуть бути нові папки і файли(в файли запишіть якусь дату) )
+// і напишіть функцію яка буде зчитувати папку і перевіряти якщо дані які в ній лежать -
+// це файли тоді вам потрібно їх очистити, але не видаляти, якщо дані -
+// це папки, вам потрібно їх перейменувати і додати до назви префікс _new
+//
+// fs.mkdir(path.join(__dirname, 'someDir', 'dir'), {recursive: true}, (error) => {
+//     if (error) {
+//         console.log(error);
+//         throw error;
+//     }
+//     fs.writeFile(path.join(__dirname, 'someDir', 'fileDir.txt'), 'SOME DATA', (error) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//     });
+//
+// });
+//
+// function chekDir() {
+//     fs.readdir(path.join(__dirname, 'someDir'), (error, data) => {
+//         if (error) {
+//             console.log(error);
+//             throw error;
+//         }
+//         data.map(item => {
+//             if (item.endsWith('.txt')) {
+//                 fs.writeFile(path.join(__dirname, 'someDir', item), '', {flag: 'w'}, (error) => {
+//                     if (error) {
+//                         console.log(error);
+//                         throw error;
+//                     }
+//                 });
+//             } else {
+//                 fs.rename(path.join(__dirname, 'someDir', item),
+//                     path.join(__dirname, 'someDir', `new${item}`), (error) => {
+//                         if (error) {
+//                             console.log(error);
+//                             throw error;
+//                         }
+//                     });
+//             }
+//         })
+//     });
+// }
+//
+// chekDir();
