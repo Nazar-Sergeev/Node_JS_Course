@@ -32,6 +32,18 @@ app.get('/users/:userId', (req, res) => {
     res.render('user', {user});
 });
 
+app.get('/singIn', (req, res) => {
+    res.render('singIn');
+});
+
+app.post('/singIn', (req, res) => {
+    const user = users.find(user => user.email === req.body.email && user.password === req.body.password);
+    if (!user) {
+        res.redirect('/errorPage');
+    }
+    res.redirect(`/users/${user.id}`);
+});
+
 app.post('/login', (req, res) => {
     const filterUser = users.some(user => user.email === req.body.email);
     if (filterUser) {
