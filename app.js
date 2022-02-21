@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const {engine} = require('express-handlebars');
+const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
 
@@ -12,52 +13,59 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', engine({defaultLayout: false}));
 app.set('views', path.join(__dirname, 'static'));
 
-const users = [];
+// const users = [];
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
+// app.get('/login', (req, res) => {
+//     res.render('login');
+// });
 
-app.get('/users', (req, res) => {
-    res.render('users', {users});
-});
+// app.get('/users', (req, res) => {
+//     res.render('users', {users});
+// });
 
-app.get('/users/:userId', (req, res) => {
-    const {userId} = req.params;
-    const user = users.find(user => user.id === +userId);
+// app.get('/users/:userId', (req, res) => {
+//     const {userId} = req.params;
+//     const user = users.find(user => user.id === +userId);
+//
+//     if (!user) {
+//         const error = `User with this id:${userId} doesn't exists, please try again!`
+//         res.render('errorPage', {error});
+//         return;
+//     }
+//
+//     res.render('user', {user});
+// });
 
-    if (!user) {
-        res.redirect('/errorPage');
-        return;
-    }
+// app.get('/singIn', (req, res) => {
+//     res.render('singIn');
+// });
 
-    res.render('user', {user});
-});
+// app.post('/singIn', ({body}, res) => {
+//     const user = users.find(user => user.email === body.email && user.password === body.password);
+//
+//     if (!user) {
+//         const error = `User with this email:${body.email} and passwords:${body.password} doesn't exists, please try again!`
+//         res.render('errorPage', {error});
+//         return;
+//     }
+//
+//     res.redirect(`/users/${user.id}`);
+// });
 
-app.get('/singIn', (req, res) => {
-    res.render('singIn');
-});
+// app.post('/login', ({body}, res) => {
+//     const filterUser = users.some(user => user.email === body.email);
+//
+//     if (filterUser) {
+//         const error = `User with this email:${body.email} exists, please try to enter another email!`
+//         res.render('errorPage', {error});
+//         return;
+//     }
+//
+//     users.push({...body, id: users.length ? users[users.length - 1].id + 1 : 1});
+//     res.redirect('users');
+// });
 
-app.post('/singIn', (req, res) => {
-    const user = users.find(user => user.email === req.body.email && user.password === req.body.password);
-
-    if (!user) {
-        res.redirect('errorPage');
-    }
-
-    res.redirect(`/users/${user.id}`);
-});
-
-app.post('/login', (req, res) => {
-    const filterUser = users.some(user => user.email === req.body.email);
-
-    if (filterUser) {
-        res.redirect('errorPage');
-    }
-
-    users.push({...req.body, id: users.length ? users[users.length - 1].id + 1 : 1});
-    res.redirect('users');
-});
+app.use(apiRoutes);
 
 app.use((req, res) => {
     res.render('errorPage');
