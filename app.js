@@ -27,18 +27,20 @@ app.get('/users/:userId', (req, res) => {
     const user = users.find(user => user.id === +userId);
     if (!user) {
         const error = `User with id: ${userId} is not found!`;
-        res.redirect('errorPage');
-        throw error;
+        res.render('errorPage',{error});
+        return;
     }
     res.render('user', {user});
 });
 
-app.post('/login', (req, res) => {
-    const filterUser = users.some(user => user.email === req.body.email);
+app.post('/login', ({body}, res) => {
+    const filterUser = users.some(user => user.email === body.email);
     if (filterUser) {
-        res.redirect('errorPage');
+        const error = `User with this email:${body.email} exists, please try to enter another email!`
+        res.render('errorPage', {error});
+        return;
     }
-    users.push({...req.body, id: users.length ? users[users.length - 1].id + 1 : 1});
+    users.push({...body, id: users.length ? users[users.length - 1].id + 1 : 1});
     res.redirect('users');
 });
 
