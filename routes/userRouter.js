@@ -1,23 +1,9 @@
 const {Router} = require('express');
-const users = require('../db/users')
-
+const userController = require('../controllers/userController');
 
 const userRouter = Router();
 
-userRouter.get('/', (req, res) => {
-    res.render('users', {users});
-});
+userRouter.get('/', userController.renderUsers);
+userRouter.get('/:userId', userController.getUserById);
 
-userRouter.get('/:userId', (req, res) => {
-    const {userId} = req.params;
-    const user = users.find(user => user.id === +userId);
-
-    if (!user) {
-        const error = `User with this id:${userId} doesn't exists, please try again!`;
-        res.render('errorPage', {error});
-        return;
-    }
-
-    res.render('user', {user});
-});
 module.exports = userRouter;
